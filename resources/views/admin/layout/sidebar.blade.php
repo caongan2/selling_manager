@@ -1,32 +1,44 @@
+<?php
+
+use App\Models\Categories;
+use App\Models\Products;
+
+$categories = Categories::all();
+$products = Products::all()
+?>
+
 <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-            <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+            <img src="{{asset('storage/'.session('userLogin')['image'])}}" class="img-circle elevation-2"
+                 alt="User Image">
         </div>
         <div class="info">
-            <a href="#" class="d-block">{{session('userLogin')['username']}}</a>
+            <a href="{{route('showProfile')}}" class="d-block">{{session('userLogin')['username']}}</a>
         </div>
     </div>
 
     <!-- SidebarSearch Form -->
-    <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-            <div class="input-group-append">
-                <button class="btn btn-sidebar">
-                    <i class="fas fa-search fa-fw"></i>
-                </button>
+    <form action="{{route('search.name')}}" method="get">
+        @csrf
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" name="name" type="text">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-
+    </form>
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
-            <li class="nav-item menu-open">
+            <li class="nav-item">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>
@@ -37,7 +49,7 @@
                     <li class="nav-item">
                         <a href="{{route('user.list')}}" class="nav-link active">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Customer List</p>
+                            <p>User List</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -49,70 +61,50 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a href="#pages/widgets.html" class="nav-link">
+                <a href="{{route('category.list')}}" class="nav-link">
                     <i class="nav-icon fas fa-th"></i>
                     <p>
-                        Widgets
+                        Categories
                         <span class="right badge badge-danger">New</span>
                     </p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-copy"></i>
+                <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>
-                        Layout Options
-                        <i class="fas fa-angle-left right"></i>
-                        <span class="badge badge-info right">6</span>
+                        Products
+                        <span class="badge badge-info right">{{count($products)}}</span>
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#pages/layout/top-nav.html" class="nav-link">
+                        <a href="" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Top Navigation</p>
+                            <p>Categories</p>
+                            <span class="badge badge-info right">{{count($categories)}}</span>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @foreach($categories as $category)
+                                <li class="nav-item">
+                                    <a href="{{route('productByCate', $category->id)}}" class="nav-link">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <p>{{$category->name}}</p>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('product.list')}}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>List</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#pages/layout/top-nav-sidebar.html" class="nav-link">
+                        <a href="{{route('product.create')}}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Top Navigation + Sidebar</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#pages/layout/boxed.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Boxed</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#pages/layout/fixed-sidebar.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Fixed Sidebar</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#pages/layout/fixed-sidebar-custom.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Fixed Sidebar <small>+ Custom Area</small></p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#pages/layout/fixed-topnav.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Fixed Navbar</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#pages/layout/fixed-footer.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Fixed Footer</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#pages/layout/collapsed-sidebar.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Collapsed Sidebar</p>
+                            <p>Add New</p>
                         </a>
                     </li>
                 </ul>

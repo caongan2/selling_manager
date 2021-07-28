@@ -53,12 +53,12 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label for="inputDescription">Number phone</label>
+                    <label for="inputDescription">Image</label>
                     <input type="file" value="}" name="image" id="image"
                            class="form-control">
                 </div>
                 <button type="submit" class="btn btn-success">Accept</button>
-                <a href="" class="btn btn-secondary">Cancel</a>
+                <a href="{{route('product.list')}}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
         <!-- /.card-body -->

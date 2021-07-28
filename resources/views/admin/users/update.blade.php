@@ -14,7 +14,7 @@
                 </button>
             </div>
         </div>
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
                 <div class="form-group">
@@ -41,6 +41,11 @@
                     @error('password')
                     <p class="text-danger">{{$message}}</p>
                     @enderror
+                </div>
+                <div class="form-group">
+                    <label for="inputDescription">Image</label>
+                    <input type="file" value="{{old('image')}}" name="image" id="image"
+                           class="form-control">
                 </div>
                 <button type="submit" class="btn btn-success">Accept</button>
                 <a href="{{route('user.list')}}" class="btn btn-secondary">Cancel</a>

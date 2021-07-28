@@ -39,11 +39,12 @@ class UserController extends Controller
      */
     public function store(UserRequest $request, User $user)
     {
+        $path = $request->file('image')->store('images', 'public');
             $user->username = $request->input('username');
             $user->password = $request->input('password');
             $user->email = $request->input('email');
             $user->phone = $request->input('phone');
-            $user->image = $request->input('image');
+            $user->image = $path;
             $path = $request->file('image');
             $path->move('img', 'image.jpg');
             $user->save();
@@ -85,11 +86,12 @@ class UserController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-
+        $path = $request->file('image')->store('images', 'public');
         $data = [
             'username' => $request->username,
             'password' => $request->password,
-            'phone' => $request->phone
+            'phone' => $request->phone,
+            'image' => $path
         ];
         DB::table('users')->where('id', $id)->update($data);
         toastr()->success('Update thành công', 'Success');
@@ -107,5 +109,12 @@ class UserController extends Controller
         DB::table('users')->where('id', $id)->delete();
         toastr()->success('Xóa người dùng thành công', 'Success');
         return redirect()->route('user.list');
+    }
+
+    public function search(Request $request)
+    {
+        $text = $request->name;
+        $users = User::where('username', 'like', '%' . $text . '%')->get();
+        return view('admin.users.search', compact('users'));
     }
 }

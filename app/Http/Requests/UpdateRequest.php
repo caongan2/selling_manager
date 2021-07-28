@@ -24,9 +24,9 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|unique:users,username|min:5',
+            'username' => 'required|min:5',
             'password' => 'required|min:5',
-            'phone' => 'required|unique:users,phone|min:10'
+            'phone' => 'required|min:10'
         ];
     }
 
@@ -34,11 +34,9 @@ class UpdateRequest extends FormRequest
     {
         return [
             'username.required' => 'Không được để trống',
-            'username.unique' => 'Tên người dùng đã tồn tại',
             'username.min' => 'Tối thiểu 5 kí tự',
             'password.required' => 'Không được để trống',
             'password.min' => 'Tối thiểu 5 kí tự',
-            'phone.unique' => 'Số điện thoại đã tồn tại',
             'phone.min' => 'Số điện thoại phải là 10 chữ số',
             'phone.required' => 'Không được để trống',
         ];

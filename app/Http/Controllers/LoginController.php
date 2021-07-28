@@ -20,27 +20,31 @@ class LoginController extends Controller
     }
 
 
-
     public function login(Request $request)
     {
         $users = User::all();
+//        dd($users);
         $username = $request->input('username');
         $password = $request->input('password');
         foreach ($users as $user) {
-            if ($username == $user->username  && $password == $user->password) {
+            if ($username == $user->username && $password == $user->password) {
                 $userLogin = [
-                 'username' => $username,
-                 'password' => $password
-               ];
+                    'id' => $user->id,
+                    'username' => $username,
+                    'password' => $password,
+                    'phone' => $user->phone,
+                    'email' => $user->email,
+                    'image' => $user->image
+                ];
                 session()->put('userLogin', $userLogin);
-                return redirect()->route('user.list');
+                toastr()->success('Welcome ' . session('userLogin')['username'], 'Success');
+                return redirect()->route('home');
 
-           }
+            }
         }
         session()->flash('login_error', 'Account not exits');
         return redirect()->route('login');
     }
-
 
 
     /**
@@ -66,7 +70,7 @@ class LoginController extends Controller
         $user->email = $request->input('email');
         $user->phone = $request->input('phone');
         $user->save();
-
+        toastr()->success(' Thêm người dùng thành công', 'Success');
         return redirect()->route('login');
     }
 
@@ -74,11 +78,12 @@ class LoginController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function show($id)
+    public function logout()
     {
-        //
+        session()->forget('userLogin');
+        return redirect()->route('login');
     }
 
     /**
@@ -87,9 +92,9 @@ class LoginController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function show()
     {
-        //
+        return view('admin.users.yourprofile');
     }
 
     /**

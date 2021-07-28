@@ -32,7 +32,7 @@
             @if(session()->has('login_error'))
                 <p class="text-danger">{{ session('login_error') }}</p>
             @endif
-            <form method="post">
+            <form action="{{route('isLogin')}}" method="POST">
                 @csrf
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="username" placeholder="Username">
